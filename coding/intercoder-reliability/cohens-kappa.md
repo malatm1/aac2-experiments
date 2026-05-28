@@ -1,8 +1,18 @@
 # Inter-Coder Reliability
 
+## Coding Process
+
+The coding followed a three-stage process:
+
+1. **AI-Assisted Initial Coding:** All 50 reasoning traces were coded against the rubric using Anthropic Cowork, producing an initial set of scores for each criterion.
+2. **Independent Human Validation:** Two human coders (Coder A and Coder B) independently reviewed every trace and its AI-generated codes, confirming, adjusting, or overriding each score.
+3. **Reconciliation:** Disagreements between the two human coders were resolved through discussion.
+
+Inter-coder reliability (Cohen's kappa) is calculated on the two human coders' independent validation judgments, not on the AI-generated codes.
+
 ## Method
 
-Inter-coder reliability is assessed using Cohen's kappa for each evaluation criterion. Kappa values are interpreted following Landis and Koch (1977):
+Kappa values are interpreted following Landis and Koch (1977):
 
 | Kappa | Interpretation |
 |---|---|
@@ -15,19 +25,29 @@ Inter-coder reliability is assessed using Cohen's kappa for each evaluation crit
 
 ## Results (to be completed after coding)
 
-| Criterion | Kappa | Interpretation | N (traces coded) |
-|---|---|---|---|
-| 1a. Explicitness | | | |
-| 1b. Mechanistic Specificity | | | |
-| 2a. First-Order EDR (per-stage presence) | | | |
-| 2c. Second-Order EDR (indicator presence) | | | |
-| 3a. Phase Coverage (per-phase) | | | |
-| 3b. Inner EDR Loop | | | |
+| Criterion | Kappa | Interpretation | N (traces coded) | AI-Human Agreement Rate |
+|---|---|---|---|---|
+| 1a. Explicitness | | | | |
+| 1b. Mechanistic Specificity | | | | |
+| 2a. First-Order EDR (per-stage presence) | | | | |
+| 2c. Second-Order EDR (indicator presence) | | | | |
+| 3a. Phase Coverage (per-phase) | | | | |
+| 3b. Inner EDR Loop | | | | |
+
+**AI-Human Agreement Rate:** The proportion of AI-generated codes that both human coders independently confirmed without adjustment. This provides a secondary measure of the AI-assisted coding tool's reliability, though it is not used as the primary reliability metric.
 
 ## Disagreements and Resolutions
 
-Document each disagreement, the coders' original scores, and the agreed resolution.
+Document each disagreement between the two human coders, their original scores, and the agreed resolution.
 
-| Trace ID | Criterion | Coder A | Coder B | Resolution | Rationale |
+| Trace ID | Criterion | AI Code | Coder A | Coder B | Resolution | Rationale |
+|---|---|---|---|---|---|---|
+| | | | | | | |
+
+## Overrides of AI-Generated Codes
+
+Document each case where a human coder overrode an AI-generated code, with rationale.
+
+| Trace ID | Criterion | AI Code | Human Code | Coder | Rationale |
 |---|---|---|---|---|---|
 | | | | | | |

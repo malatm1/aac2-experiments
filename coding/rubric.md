@@ -1,6 +1,31 @@
 # Qualitative Coding Rubric
 
-This rubric guides the qualitative analysis of reasoning traces across all three experiments. Two independent coders apply this rubric to each trace, with inter-coder reliability assessed using Cohen's kappa.
+This rubric guides the qualitative analysis of reasoning traces across all three experiments. The coding procedure follows a three-stage process: AI-assisted initial coding, independent human validation, and reconciliation.
+
+---
+
+## Coding Procedure
+
+### Stage 1: AI-Assisted Initial Coding
+All 50 reasoning traces are coded against this rubric using an AI-assisted analysis tool (Anthropic Cowork). Cowork applies the rubric systematically across all traces and produces an initial set of codes for each criterion. These codes serve as the starting point for human validation, not as final judgments.
+
+### Stage 2: Independent Human Validation
+Two independent human coders (Coder A and Coder B) each review every trace and its AI-generated codes. For each code, the human coder either:
+- **Confirms** the AI-generated code (agrees with the assigned score)
+- **Adjusts** the code (assigns a different score with a written rationale)
+- **Overrides** the code (rejects the AI-generated code entirely with a written rationale)
+
+Human coders do not discuss individual traces or see each other's validations until both have completed their independent review.
+
+### Stage 3: Reconciliation
+Inter-coder reliability is calculated using Cohen's kappa on the two human coders' independent validation judgments (not on the AI-generated codes). Disagreements between the human coders are resolved through discussion, and each resolution is documented with a rationale. The final coded dataset includes:
+- The AI-generated initial codes
+- Coder A's independent validation
+- Coder B's independent validation
+- The reconciled final codes
+- Documentation of all disagreements and their resolutions
+
+All materials are deposited in `coded-data/` in the public GitHub repository.
 
 ---
 
@@ -100,13 +125,3 @@ Is an EDR cycle observable within the Deployment and Validation phase?
 ### 3c. Phase Transitions
 
 Qualitative annotation: How does the model transition between phases? Are any phases skipped, collapsed into one step, or reordered?
-
----
-
-## Coding Procedure
-
-1. Each coder independently codes all traces using this rubric.
-2. Coders do not discuss individual traces until both have completed their independent coding.
-3. Inter-coder reliability is calculated using Cohen's kappa for each criterion.
-4. Disagreements are resolved through discussion, and the resolution is documented.
-5. The final coded dataset (with both coders' independent scores and the resolved scores) is saved in `coded-data/`.
