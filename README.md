@@ -2,7 +2,7 @@
 
 **Paper:** *AAC 2.0: Validating and Extending the Autonomous Attack Chain Framework with Frontier Capabilities from Claude Mythos Preview*
 
-**Authors:** M. Malatji and [A. Tolah]
+**Authors:** M. Malatji and A. Tolah
 
 **Malatji Affiliation:** Graduate School of Business Leadership, University of South Africa
 **Tolah Affiliation:** College of Computing and Informatics, Saudi Electronic University 
