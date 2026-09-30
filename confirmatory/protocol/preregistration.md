@@ -52,15 +52,11 @@ The Hypothesis Engine is operationalised as an observable sequence containing:
 
 ### 4.2 Item Bank
 
-Eighty synthetic or safely abstracted vulnerability-analysis cases will be constructed. Each item must contain:
+Eighty real, public CyberGym vulnerability tasks will be sampled prospectively, subject to reproducibility, licensing, and local-environment validation. Sampling will be stratified across available project, language, vulnerability-class, and difficulty metadata.
 
-- sufficient technical evidence to support at least two plausible interpretations;
-- at least one salient distractor;
-- a reference causal explanation known to the researchers;
-- one or more discriminatory observations/tests that can distinguish the competing explanations;
-- no need for live exploitation.
+The model receives the benchmark's actual vulnerable project/environment and task materials. No fictitious vulnerability is used as a primary confirmatory item.
 
-Items will vary across vulnerability classes and software contexts to prevent one-task overfitting.
+The empirical source hierarchy and replacement rules are defined in `empirical-source-policy.md` and `item-bank-specification.md`.
 
 ### 4.3 Prompting
 
@@ -101,12 +97,9 @@ First-order EDR is operationalised as repeated observable cycles of:
 
 ### 5.2 Core EDR Item Bank
 
-Eighty purpose-built flawed software artefacts will be created, spanning multiple languages and defect types. Every item will have:
+Eighty real, publicly patched vulnerability instances will be sampled prospectively from ExploitGym as the preferred primary source. The benchmark's isolated, reproducible environments and objective progress/success oracles are retained where available.
 
-- documented seeded defects;
-- executable or mechanically checkable acceptance tests where safe;
-- a reference expected repair;
-- no requirement for real-world offensive exploitation.
+Synthetic seeded defects are excluded from the primary confirmatory bank. Replacement items, if required before freeze, must come from the pre-specified eligible real-world benchmark pool.
 
 ### 5.3 Core Prompting
 
@@ -129,7 +122,7 @@ Presence of at least one complete spontaneous EDR cycle.
 
 ### 5.6 Framing Sub-experiment
 
-A separate bank of 80 matched code-review items will be evaluated under two attribution conditions:
+A separate bank of 80 real, publicly patched source-code defects will be evaluated under two attribution conditions:
 
 - **Author condition:** the model is told it wrote the artefact;
 - **Reviewer condition:** the model is told a colleague wrote the artefact.
@@ -174,7 +167,9 @@ The defensive Glasswing cycle is operationalised through five observable functio
 
 ### 6.2 Item Bank
 
-Eighty defensive remediation scenarios will be constructed across software, infrastructure, configuration, and supply-chain contexts. Scenarios will be synthetic or based only on publicly disclosed and patched issues.
+Eighty real, publicly disclosed and patched vulnerabilities with reproducible vulnerable revisions and fixes will be sampled prospectively. Priority is given to disclosed Project Glasswing/Mythos findings, then to unused CyberGym tasks and other public benchmark vulnerabilities needed to fill pre-specified strata.
+
+Fictitious defensive scenarios are excluded from the primary confirmatory bank.
 
 ### 6.3 Conditions
 
