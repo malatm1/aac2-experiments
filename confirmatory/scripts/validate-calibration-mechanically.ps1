@@ -41,15 +41,39 @@ if ($benchCommit -ne $PinnedBenchCommit) {
     throw "Benchmark commit mismatch: expected $PinnedBenchCommit, got $benchCommit"
 }
 
-Section "1. NORMALISE PINNED BENCHMARK CHECKOUT FOR LINUX"
+Section "1. NORMALISE PINNED BENCHMARK SHELL SCRIPTS FOR LINUX"
 
-# Re-materialise tracked files from the pinned Git index using LF line endings.
-# This preserves the untracked downloaded task data.
-git -C $benchDir config core.autocrlf false
-git -C $benchDir config core.eol lf
-git -C $benchDir checkout-index -f -a
+# Windows Git may materialise shell scripts with CRLF endings.  For the local
+# Docker calibration only, normalise tracked *.sh files byte-for-byte from
+# CRLF to LF.  This changes line endings only; the pinned Git commit stays fixed.
+$trackedSh = git -C $benchDir ls-files "*.sh"
 if ($LASTEXITCODE -ne 0) {
-    throw "Could not rematerialise the pinned CyberGym-E2E checkout."
+    throw "Could not enumerate tracked shell scripts."
+}
+
+$normalisedCount = 0
+foreach ($rel in $trackedSh) {
+    $local = Join-Path $benchDir ($rel -replace "/", "\")
+    if (-not (Test-Path $local)) {
+        continue
+    }
+
+    $data = [System.IO.File]::ReadAllBytes($local)
+    $out = New-Object System.Collections.Generic.List[byte]
+    $changed = $false
+
+    for ($i = 0; $i -lt $data.Length; $i++) {
+        if ($data[$i] -eq 13 -and ($i + 1) -lt $data.Length -and $data[$i + 1] -eq 10) {
+            $changed = $true
+            continue
+        }
+        $out.Add($data[$i])
+    }
+
+    if ($changed) {
+        [System.IO.File]::WriteAllBytes($local, $out.ToArray())
+        $normalisedCount++
+    }
 }
 
 $benchCommitAfter = (git -C $benchDir rev-parse HEAD).Trim()
@@ -57,16 +81,25 @@ if ($benchCommitAfter -ne $PinnedBenchCommit) {
     throw "Benchmark commit changed during line-ending normalisation."
 }
 
-$installDeps = Join-Path $benchDir "scripts\install_validate_deps.sh"
-$bytes = [System.IO.File]::ReadAllBytes($installDeps)
-$crCount = ($bytes | Where-Object { $_ -eq 13 }).Count
-if ($crCount -ne 0) {
-    throw "LF normalisation failed: install_validate_deps.sh still contains carriage-return bytes."
+$remainingCr = 0
+foreach ($rel in $trackedSh) {
+    $local = Join-Path $benchDir ($rel -replace "/", "\")
+    if (-not (Test-Path $local)) {
+        continue
+    }
+    $data = [System.IO.File]::ReadAllBytes($local)
+    if (($data | Where-Object { $_ -eq 13 }).Count -gt 0) {
+        $remainingCr++
+    }
 }
 
-Write-Host "[OK] Pinned benchmark rematerialised with LF line endings."
-Write-Host "[OK] install_validate_deps.sh contains no carriage-return bytes."
-Write-Host ("[OK] Benchmark commit remains: {0}" -f $benchCommitAfter)
+if ($remainingCr -ne 0) {
+    throw "LF normalisation failed: $remainingCr tracked shell script(s) still contain carriage-return bytes."
+}
+
+Write-Host ("[OK] Normalised {0} tracked shell script(s) from CRLF to LF." -f $normalisedCount)
+Write-Host "[OK] All tracked shell scripts are now Linux-safe."
+Write-Host ("[OK] Benchmark commit remains pinned: {0}" -f $benchCommitAfter)
 
 Section "2. VERIFY CALIBRATION DATA"
 
