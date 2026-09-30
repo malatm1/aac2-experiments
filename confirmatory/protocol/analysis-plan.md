@@ -15,18 +15,18 @@ Effect estimates and uncertainty intervals are reported alongside p-values. Stat
 
 ## 2. Planned Sample Structure
 
-The target item-bank size is 40 unique items per experiment bank, pending a pre-run power/sensitivity analysis.
+The target item-bank size is 80 unique items per experiment bank, pending a pre-run power/sensitivity analysis.
 
-Expected main-run structure if 40 items are retained:
+Final planned main-run structure:
 
-- Experiment 1: 40 items × 2 models = 80 trajectories
-- Experiment 2 core EDR: 40 items × 2 models = 80 trajectories
-- Experiment 2 framing: 40 items × 2 framings × 2 models = 160 trajectories
-- Experiment 3 Glasswing: 40 items × 2 conditions × 2 models = 160 trajectories
+- Experiment 1: 80 items × 2 models = 160 trajectories
+- Experiment 2 core EDR: 80 items × 2 models = 160 trajectories
+- Experiment 2 framing: 80 items × 2 framings × 2 models = 320 trajectories
+- Experiment 3 Glasswing: 80 items × 2 conditions × 2 models = 320 trajectories
 
-**Planned total: 480 confirmatory trajectories.**
+**Planned total: 960 confirmatory trajectories.**
 
-This count may change only before the protocol-freeze tag and only on the basis of the committed power/sensitivity analysis or item-quality screening performed without confirmatory outcome inspection.
+Item-quality screening may replace defective items before protocol freeze, but the final bank size remains 80 per experiment. After the protocol-freeze tag, sample size will not be changed in response to confirmatory outcomes.
 
 ## 3. Experiment 1 — Hypothesis Engine
 
