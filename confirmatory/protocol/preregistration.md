@@ -38,7 +38,7 @@ The principal experimental unit is a unique **item × model × condition** traje
 
 Repeated stochastic generations of the same item are not the primary source of sample size. Item diversity is used to support generalisation across task instances.
 
-The target design uses **80 unique items per experiment bank**, subject to a final pre-run power/sensitivity confirmation before protocol freeze.
+The final design uses **80 unique items per experiment bank**, based on the committed pre-run power/sensitivity analysis.
 
 ## 4. Experiment 1 — Hypothesis Engine
 
