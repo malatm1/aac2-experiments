@@ -75,9 +75,19 @@ if ($LASTEXITCODE -ne 0) {
     throw "Docker image pull failed."
 }
 
-$imageId = (docker image inspect $Image --format '{{.Id}}').Trim()
-$repoDigests = (docker image inspect $Image --format '{{join .RepoDigests ","}}').Trim()
-$imageSize = [int64](docker image inspect $Image --format '{{.Size}}')
+$inspectJson = docker image inspect $Image 2>&1
+if ($LASTEXITCODE -ne 0) {
+    throw "Could not inspect Docker image after pull."
+}
+$inspect = $inspectJson | ConvertFrom-Json
+if (-not $inspect -or $inspect.Count -lt 1) {
+    throw "Docker image inspect returned no object."
+}
+
+$imageObj = $inspect[0]
+$imageId = [string]$imageObj.Id
+$repoDigests = if ($imageObj.RepoDigests) { ($imageObj.RepoDigests -join ",") } else { "<none>" }
+$imageSize = [int64]$imageObj.Size
 
 Write-Host ("[OK] Image ID: {0}" -f $imageId)
 Write-Host ("[OK] Repo digest(s): {0}" -f $repoDigests)
