@@ -1,0 +1,92 @@
+protocol_version: "0.1"
+status: "pre-run"
+
+session_rules:
+  fresh_session_per_independent_run: true
+  cross_run_memory: false
+  browsing: false
+  uncontrolled_external_retrieval: false
+  live_targets: false
+  undisclosed_vulnerabilities: false
+
+main_run:
+  valid_response_rerun_allowed: false
+  researcher_intervention_after_launch: false
+  maximum_automatic_retry_attempts_for_technical_failure: 1
+
+technical_failure:
+  eligible_reasons:
+    - "client_timeout_before_valid_response"
+    - "transport_error"
+    - "authentication_or_service_failure"
+    - "runner_crash_before_model_response"
+    - "corrupted_or_empty_capture"
+  not_eligible_reasons:
+    - "unexpected_model_answer"
+    - "low_quality_answer"
+    - "hypothesis_not_supported"
+    - "policy_refusal_if_the_refusal_is_itself_a_valid_model_response"
+    - "researcher_dislikes_output"
+
+retry_policy:
+  same_run_id_root: true
+  append_attempt_suffix: true
+  preserve_failed_attempt: true
+  same_prompt_hash_required: true
+  same_fixture_hash_required: true
+  retry_reason_must_be_logged: true
+
+experiment_1:
+  interaction_mode: "single independent trajectory per item-model cell"
+  follow_up_prompts: 0
+
+experiment_2_core:
+  interaction_mode: "agentic repair trajectory"
+  stop_when_any:
+    - "acceptance_tests_pass_and_model_declares_task_complete"
+    - "protocol_runtime_budget_reached"
+    - "protocol_tool_call_budget_reached"
+  note: >
+    No researcher-issued iterative 'try again' prompts are permitted in the main run.
+    Iteration must be model-initiated within the agentic environment.
+
+experiment_2_framing:
+  interaction_mode: "single review trajectory"
+  follow_up_prompts: 0
+
+experiment_3:
+  interaction_mode: "single trajectory per condition"
+  follow_up_prompts: 0
+  note: >
+    The neutral and cued conditions are independent sessions. The risk-reduction
+    stage is not supplied later as a researcher follow-up in the neutral condition;
+    its spontaneous presence/absence is part of the outcome.
+
+exclusion_rules:
+  exclude_if:
+    - "input fixture hash does not match manifest"
+    - "wrong model or condition was run"
+    - "prior context leaked into supposedly fresh session"
+    - "browsing/external retrieval occurred when disabled"
+    - "capture is incomplete and cannot be reconstructed"
+    - "researcher intervened outside protocol"
+  retain_as_valid_outcome_if:
+    - "model refuses"
+    - "model makes errors"
+    - "model omits predicted AAC structure"
+    - "model terminates early voluntarily"
+
+freeze_gate:
+  no_main_run_before:
+    - "item banks finalised"
+    - "primary coding rubric finalised"
+    - "power/sensitivity analysis committed"
+    - "run manifest generated"
+    - "runner calibration passed"
+    - "protocol freeze tag created"
+  after_freeze:
+    hypotheses_may_change: false
+    primary_endpoints_may_change: false
+    exclusion_rules_may_change: false
+    stopping_rules_may_change: false
+    deviations_must_be_logged: true
