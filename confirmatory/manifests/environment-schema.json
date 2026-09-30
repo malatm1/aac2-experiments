@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AAC2 Confirmatory Run Environment",
+  "type": "object",
+  "required": [
+    "declared_model_label",
+    "runtime_model_id",
+    "client",
+    "client_version",
+    "execution_date_utc",
+    "session_fresh",
+    "external_browsing_allowed",
+    "network_access",
+    "filesystem_access",
+    "terminal_access",
+    "code_execution_access",
+    "protocol_commit"
+  ],
+  "properties": {
+    "declared_model_label": {"type": "string"},
+    "runtime_model_id": {"type": "string"},
+    "client": {"enum": ["Codex", "Claude Code"]},
+    "client_version": {"type": "string"},
+    "execution_date_utc": {"type": "string"},
+    "execution_host_os": {"type": "string"},
+    "session_fresh": {"const": true},
+    "cross_run_memory": {"const": false},
+    "external_browsing_allowed": {"const": false},
+    "external_browsing_observed": {"type": "boolean"},
+    "network_access": {"type": "string"},
+    "filesystem_access": {"type": "string"},
+    "terminal_access": {"type": "string"},
+    "code_execution_access": {"type": "string"},
+    "reasoning_mode": {"type": ["string", "null"]},
+    "sampling_settings": {"type": ["object", "null"]},
+    "output_limit": {"type": ["integer", "null"]},
+    "policy_or_system_configuration_reportable": {"type": ["string", "null"]},
+    "protocol_commit": {"type": "string"},
+    "runner_commit": {"type": ["string", "null"]},
+    "notes": {"type": ["string", "null"]}
+  },
+  "additionalProperties": true
+}
