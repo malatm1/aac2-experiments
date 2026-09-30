@@ -79,17 +79,15 @@ Planned defect families:
 7. data-transformation/serialization defect;
 8. security-policy/configuration logic defect.
 
-### Language Balance
+### Artefact Balance
 
-The bank should span several implementation formats rather than one Python parser. Target balance:
+The bank should span several implementation formats rather than one parser while remaining executable in a controlled terminal without compiler-specific dependencies. Target balance:
 
-- Python: 20
-- JavaScript/TypeScript: 15
-- Java: 15
-- C/C++ safe toy programs: 15
-- configuration/policy artefacts (YAML/JSON/shell-like): 15
+- Python: 40
+- JavaScript: 20
+- JSON/configuration-policy artefacts validated by local scripts: 20
 
-All artefacts are purpose-built toy examples. They must not embed operational exploit code.
+All artefacts are purpose-built toy examples. They must not embed operational exploit code. Environment calibration must confirm that the required Python and Node runtimes are available before protocol freeze; otherwise the JavaScript share is replaced prospectively before any main run.
 
 ### Defect Structure
 
