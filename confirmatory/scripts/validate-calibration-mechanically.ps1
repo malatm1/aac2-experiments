@@ -41,23 +41,32 @@ if ($benchCommit -ne $PinnedBenchCommit) {
     throw "Benchmark commit mismatch: expected $PinnedBenchCommit, got $benchCommit"
 }
 
-Section "1. NORMALISE PINNED BENCHMARK SHELL SCRIPTS FOR LINUX"
+Section "1. NORMALISE PINNED BENCHMARK TEXT ARTEFACTS FOR LINUX"
 
-# Windows Git may materialise shell scripts with CRLF endings.  For the local
-# Docker calibration only, normalise tracked *.sh files byte-for-byte from
-# CRLF to LF.  This changes line endings only; the pinned Git commit stays fixed.
-$trackedSh = git -C $benchDir ls-files "*.sh"
+# Windows Git may materialise tracked text files with CRLF endings.  The Linux
+# benchmark containers require LF shell scripts, and patch context must also
+# use LF to match the LF source inside src.tgz.  Normalise CRLF -> LF only.
+$patterns = @("*.sh","*.diff")
+$tracked = @()
+foreach ($pattern in $patterns) {
+    $tracked += git -C $benchDir ls-files $pattern
+}
+$tracked = $tracked | Sort-Object -Unique
+
 if ($LASTEXITCODE -ne 0) {
-    throw "Could not enumerate tracked shell scripts."
+    throw "Could not enumerate tracked benchmark text artefacts."
 }
 
 $normalisedCount = 0
-foreach ($rel in $trackedSh) {
+$patchAudit = $null
+
+foreach ($rel in $tracked) {
     $local = Join-Path $benchDir ($rel -replace "/", "\")
     if (-not (Test-Path $local)) {
         continue
     }
 
+    $beforeHash = (Get-FileHash -Algorithm SHA256 $local).Hash.ToLower()
     $data = [System.IO.File]::ReadAllBytes($local)
     $out = New-Object System.Collections.Generic.List[byte]
     $changed = $false
@@ -74,6 +83,17 @@ foreach ($rel in $trackedSh) {
         [System.IO.File]::WriteAllBytes($local, $out.ToArray())
         $normalisedCount++
     }
+
+    $afterHash = (Get-FileHash -Algorithm SHA256 $local).Hash.ToLower()
+
+    if ($rel -eq "projects/arrow/arvo_41221/patch.diff") {
+        $patchAudit = [ordered]@{
+            path = $rel
+            changed = $changed
+            sha256_before = $beforeHash
+            sha256_after = $afterHash
+        }
+    }
 }
 
 $benchCommitAfter = (git -C $benchDir rev-parse HEAD).Trim()
@@ -81,25 +101,29 @@ if ($benchCommitAfter -ne $PinnedBenchCommit) {
     throw "Benchmark commit changed during line-ending normalisation."
 }
 
-$remainingCr = 0
-foreach ($rel in $trackedSh) {
+$remainingCrFiles = @()
+foreach ($rel in $tracked) {
     $local = Join-Path $benchDir ($rel -replace "/", "\")
     if (-not (Test-Path $local)) {
         continue
     }
     $data = [System.IO.File]::ReadAllBytes($local)
     if (($data | Where-Object { $_ -eq 13 }).Count -gt 0) {
-        $remainingCr++
+        $remainingCrFiles += $rel
     }
 }
-
-if ($remainingCr -ne 0) {
-    throw "LF normalisation failed: $remainingCr tracked shell script(s) still contain carriage-return bytes."
+if ($remainingCrFiles.Count -ne 0) {
+    throw "LF normalisation failed for: $($remainingCrFiles -join ', ')"
 }
 
-Write-Host ("[OK] Normalised {0} tracked shell script(s) from CRLF to LF." -f $normalisedCount)
-Write-Host "[OK] All tracked shell scripts are now Linux-safe."
+Write-Host ("[OK] Normalised {0} tracked .sh/.diff file(s) from CRLF to LF." -f $normalisedCount)
+Write-Host "[OK] All tracked shell/patch artefacts are Linux-safe."
 Write-Host ("[OK] Benchmark commit remains pinned: {0}" -f $benchCommitAfter)
+if ($patchAudit) {
+    Write-Host ("[AUDIT] patch.diff changed: {0}" -f $patchAudit.changed)
+    Write-Host ("[AUDIT] patch.diff SHA256 before: {0}" -f $patchAudit.sha256_before)
+    Write-Host ("[AUDIT] patch.diff SHA256 after:  {0}" -f $patchAudit.sha256_after)
+}
 
 Section "2. VERIFY CALIBRATION DATA"
 
@@ -120,7 +144,7 @@ if (-not (Test-Path $patchPath)) {
     throw "Ground-truth patch missing from pinned benchmark source."
 }
 $patchHash = (Get-FileHash -Algorithm SHA256 $patchPath).Hash.ToLower()
-Write-Host ("[OK] patch.diff SHA256: {0}" -f $patchHash)
+Write-Host ("[OK] patch.diff SHA256 used for validation: {0}" -f $patchHash)
 
 Section "3. DOCKER IMAGE"
 
@@ -241,6 +265,7 @@ $record = [ordered]@{
     build_image_id = $imageId
     build_image_repo_digests = $repoDigests
     ground_truth_patch_sha256 = $patchHash
+    ground_truth_patch_line_ending_audit = $patchAudit
     stage3 = "passed"
     stage4 = "passed"
     timestamp_utc = (Get-Date).ToUniversalTime().ToString("o")
