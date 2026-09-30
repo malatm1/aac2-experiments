@@ -19,13 +19,25 @@ Write-Host "It only installs the HF client if needed, authenticates, and lists m
 
 Section "1. HUGGING FACE CLIENT"
 
+$savedEap = $ErrorActionPreference
+$ErrorActionPreference = "Continue"
 $import = & python -c "import huggingface_hub; print(huggingface_hub.__version__)" 2>$null
-if ($LASTEXITCODE -ne 0) {
+$importExit = $LASTEXITCODE
+$ErrorActionPreference = $savedEap
+
+if ($importExit -ne 0) {
+    Write-Host "huggingface_hub is not installed yet."
     Write-Host "Installing huggingface_hub..."
+    $savedEap = $ErrorActionPreference
+    $ErrorActionPreference = "Continue"
     & python -m pip install --upgrade huggingface_hub
-    if ($LASTEXITCODE -ne 0) {
+    $pipExit = $LASTEXITCODE
+    $ErrorActionPreference = $savedEap
+    if ($pipExit -ne 0) {
         throw "Failed to install huggingface_hub."
     }
+} else {
+    Write-Host ("[OK] Python huggingface_hub: {0}" -f ($import | Out-String).Trim())
 }
 
 $hf = Get-Command hf -ErrorAction SilentlyContinue
