@@ -41,8 +41,26 @@ if ($benchCommit -ne "b46456c46838b2b090d7e6ded5bfdf1ff583dba7") {
 
 Section "1. VERIFY HUGGING FACE LOGIN"
 
-& hf auth whoami
-if ($LASTEXITCODE -ne 0) {
+$hf = Get-Command hf -ErrorAction SilentlyContinue
+if (-not $hf) {
+    $pythonExe = (Get-Command python).Source
+    $scriptsDir = Join-Path (Split-Path $pythonExe -Parent) "Scripts"
+    $hfCandidate = Join-Path $scriptsDir "hf.exe"
+    if (Test-Path $hfCandidate) {
+        $hf = Get-Item $hfCandidate
+    }
+}
+if (-not $hf) {
+    throw "Hugging Face CLI not found. Re-run the access-check script first."
+}
+
+$oldEap = $ErrorActionPreference
+$ErrorActionPreference = "Continue"
+& $hf.FullName auth whoami
+$hfStatus = $LASTEXITCODE
+$ErrorActionPreference = $oldEap
+
+if ($hfStatus -ne 0) {
     throw "Hugging Face authentication is not active."
 }
 
