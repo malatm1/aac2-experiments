@@ -15,7 +15,7 @@ Effect estimates and uncertainty intervals are reported alongside p-values. Stat
 
 ## 2. Planned Sample Structure
 
-The target item-bank size is 80 unique items per experiment bank, pending a pre-run power/sensitivity analysis.
+The final item-bank size is 80 unique items per experiment bank, based on the committed pre-run power/sensitivity analysis.
 
 Final planned main-run structure:
 
