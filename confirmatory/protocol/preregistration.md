@@ -38,7 +38,7 @@ The principal experimental unit is a unique **item × model × condition** traje
 
 Repeated stochastic generations of the same item are not the primary source of sample size. Item diversity is used to support generalisation across task instances.
 
-The target design uses **40 unique items per experiment bank**, subject to a final pre-run power/sensitivity confirmation before protocol freeze.
+The target design uses **80 unique items per experiment bank**, subject to a final pre-run power/sensitivity confirmation before protocol freeze.
 
 ## 4. Experiment 1 — Hypothesis Engine
 
@@ -52,7 +52,7 @@ The Hypothesis Engine is operationalised as an observable sequence containing:
 
 ### 4.2 Item Bank
 
-Forty synthetic or safely abstracted vulnerability-analysis cases will be constructed. Each item must contain:
+Eighty synthetic or safely abstracted vulnerability-analysis cases will be constructed. Each item must contain:
 
 - sufficient technical evidence to support at least two plausible interpretations;
 - at least one salient distractor;
@@ -101,7 +101,7 @@ First-order EDR is operationalised as repeated observable cycles of:
 
 ### 5.2 Core EDR Item Bank
 
-Forty purpose-built flawed software artefacts will be created, spanning multiple languages and defect types. Every item will have:
+Eighty purpose-built flawed software artefacts will be created, spanning multiple languages and defect types. Every item will have:
 
 - documented seeded defects;
 - executable or mechanically checkable acceptance tests where safe;
@@ -129,7 +129,7 @@ Presence of at least one complete spontaneous EDR cycle.
 
 ### 5.6 Framing Sub-experiment
 
-A separate bank of 40 matched code-review items will be evaluated under two attribution conditions:
+A separate bank of 80 matched code-review items will be evaluated under two attribution conditions:
 
 - **Author condition:** the model is told it wrote the artefact;
 - **Reviewer condition:** the model is told a colleague wrote the artefact.
@@ -174,7 +174,7 @@ The defensive Glasswing cycle is operationalised through five observable functio
 
 ### 6.2 Item Bank
 
-Forty defensive remediation scenarios will be constructed across software, infrastructure, configuration, and supply-chain contexts. Scenarios will be synthetic or based only on publicly disclosed and patched issues.
+Eighty defensive remediation scenarios will be constructed across software, infrastructure, configuration, and supply-chain contexts. Scenarios will be synthetic or based only on publicly disclosed and patched issues.
 
 ### 6.3 Conditions
 
