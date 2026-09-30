@@ -13,3 +13,6 @@ Thumbs.db
 __pycache__/
 *.pyc
 .env
+
+# External benchmark working copies
+external/
