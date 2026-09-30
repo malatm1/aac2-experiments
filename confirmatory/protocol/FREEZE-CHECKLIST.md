@@ -18,7 +18,19 @@ The confirmatory main run is prohibited until every **REQUIRED** item is complet
 - [x] REQUIRED — confirmatory analysis plan committed
 - [x] REQUIRED — pilot excluded from confirmatory estimates
 
-## C. Item Banks
+## C. Benchmark Feasibility and Pinning
+
+- [ ] REQUIRED — local disk/compute feasibility recorded
+- [ ] REQUIRED — CyberGym feasibility decision recorded
+- [ ] REQUIRED — CyberGym-E2E feasibility decision recorded
+- [ ] REQUIRED — optional ExploitGym/ExploitBench access decision recorded
+- [ ] REQUIRED — selected benchmark repositories pinned to commit SHAs
+- [ ] REQUIRED — selected Docker images pinned to digests
+- [ ] REQUIRED — task-list files and local datasets hashed
+- [ ] REQUIRED — model CLI integration verified in isolated benchmark environment
+- [ ] REQUIRED — benchmark network isolation verified
+
+## D. Item Banks
 
 - [ ] REQUIRED — 80-item Hypothesis Engine bank complete
 - [ ] REQUIRED — 80-item core EDR bank complete
@@ -31,7 +43,7 @@ The confirmatory main run is prohibited until every **REQUIRED** item is complet
 - [ ] REQUIRED — paired framing fixtures differ only in attribution wording
 - [ ] REQUIRED — paired Glasswing fixtures differ only in task structure
 
-## D. Coding
+## E. Coding
 
 - [x] REQUIRED — coding rubric v2 committed
 - [ ] REQUIRED — blank independent Coder A sheet generated
@@ -40,7 +52,7 @@ The confirmatory main run is prohibited until every **REQUIRED** item is complet
 - [ ] REQUIRED — blinding transformation tested
 - [ ] REQUIRED — reliability script validated on synthetic labels
 
-## E. Execution
+## F. Execution
 
 - [x] REQUIRED — stopping/retry policy committed
 - [x] REQUIRED — run metadata schema committed
@@ -56,7 +68,7 @@ The confirmatory main run is prohibited until every **REQUIRED** item is complet
 - [ ] REQUIRED — forbidden browsing/external retrieval guard tested
 - [ ] REQUIRED — calibration set completed without protocol-level theory changes
 
-## F. Reproducibility
+## G. Reproducibility
 
 - [ ] REQUIRED — run schedule generated
 - [ ] REQUIRED — input hashes generated
